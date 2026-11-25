@@ -309,6 +309,7 @@ main{background:var(--bg)}
 .or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;margin:12px 0}.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
 .linkb{background:none;border:0;color:var(--accent);cursor:pointer;font:inherit;padding:4px}
 .nav-b.acct .nl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px}
+.runout{direction:ltr;white-space:pre-wrap;font-family:'IBM Plex Mono',monospace;font-size:13px;padding:10px 12px;border-top:1px solid var(--line);background:var(--surface-2);max-height:320px;overflow:auto;text-align:left}.runout.err{color:#c0392b}.runout.mm{white-space:normal;text-align:center;background:var(--surface)}.runout.mm svg{max-width:100%;height:auto}.code-h .mini:disabled{opacity:.5}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
 </head>
@@ -359,7 +360,28 @@ function mdInline(s){
   s=s.replace(/\u0000(\d+)\u0000/g,function(m,i){return '<code>'+esc(codes[+i])+'</code>';});
   return s;
 }
-function mdCode(code,lang){return '<div class="code"><div class="code-h"><span>'+esc(lang||'code')+'</span><button type="button" class="mini" data-act="copycode">نسخ</button></div><pre dir="ltr"><code>'+esc(code)+'</code></pre></div>';}
+
+/* ---------- open-source add-ons: Pyodide (run Python in the browser) + Mermaid (diagrams) ---------- */
+var _scr={};
+function loadScript(u){if(_scr[u])return _scr[u];return _scr[u]=new Promise(function(ok,no){var t=document.createElement('script');t.src=u;t.onload=ok;t.onerror=function(){delete _scr[u];no(new Error('load'));};document.head.appendChild(t);});}
+function outBox(b,cls){var c=b.closest('.code'),o=c.querySelector('.runout');if(!o){o=document.createElement('div');o.className='runout';c.appendChild(o);}o.className='runout '+(cls||'');return o;}
+var _py=null;
+function runPy(b){
+  var code=b.closest('.code').querySelector('code').textContent,o=outBox(b);o.textContent='جارٍ التحميل (أول مرة قد تستغرق ثواني)...';b.disabled=true;
+  (_py||(_py=loadScript('https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js').then(function(){return loadPyodide();}))).then(function(py){
+    var out=[];py.setStdout({batched:function(x){out.push(x);}});py.setStderr({batched:function(x){out.push(x);}});
+    return py.runPythonAsync(code).then(function(r){if(r!==undefined&&r!==null&&!out.length)out.push(String(r));o.textContent=out.join('\n')||'(تم التنفيذ بدون مخرجات)';}).catch(function(e){o.className='runout err';o.textContent=String(e.message||e).split('\n').slice(-6).join('\n');});
+  }).catch(function(){_py=null;o.className='runout err';o.textContent='تعذّر تحميل بيئة بايثون.';}).then(function(){b.disabled=false;});
+}
+function runMmd(b){
+  var code=b.closest('.code').querySelector('code').textContent,o=outBox(b);o.textContent='جارٍ الرسم...';
+  loadScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js').then(function(){
+    var dk=document.documentElement.getAttribute('data-theme')==='dark'||(!document.documentElement.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme:dark)').matches);
+    window.mermaid.initialize({startOnLoad:false,securityLevel:'strict',theme:dk?'dark':'default'});
+    return window.mermaid.render('mm'+Date.now(),code);
+  }).then(function(r){o.className='runout mm';o.innerHTML=r.svg;}).catch(function(){o.className='runout err';o.textContent='تعذّر رسم المخطط، تحقق من الصيغة.';});
+}
+function mdCode(code,lang){var lg=String(lang||'').toLowerCase(),rb=(lg==='python'||lg==='py')?'<button type="button" class="mini" data-act="runpy">▶ تشغيل</button>':(lg==='mermaid'?'<button type="button" class="mini" data-act="runmmd">رسم</button>':'');return '<div class="code"><div class="code-h"><span>'+esc(lang||'code')+'</span><span>'+rb+'<button type="button" class="mini" data-act="copycode">نسخ</button></span></div><pre dir="ltr"><code>'+esc(code)+'</code></pre></div>';}
 var TSEP=/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/;
 function splitRow(l){l=l.trim();if(l[0]==='|')l=l.slice(1);if(l[l.length-1]==='|')l=l.slice(0,-1);var cells=[],cur='',k;for(k=0;k<l.length;k++){var ch=l[k];if(ch==='\\'&&l[k+1]==='|'){cur+='|';k++;}else if(ch==='|'){cells.push(cur.trim());cur='';}else cur+=ch;}cells.push(cur.trim());return cells;}
 function indentOf(l){return l.match(/^\s*/)[0].replace(/\t/g,'    ').length;}
@@ -486,7 +508,7 @@ chats=chats.filter(function(c){return c.msgs.length;});var curId=null;
 var gallery=LS.get('iso1.gallery',[])||[];
 var UI={view:'chat',toolsOpen:false,imgMode:false,webMode:false,busy:false,ctrl:null,attach:null};
 var COARSE=!!(window.matchMedia&&matchMedia('(pointer: coarse)').matches);
-var PERSONA='أنت iso.1، مساعد ذكاء اصطناعي ذكي ودود.\n- أجب بلغة المستخدم نفسها وبأسلوب طبيعي (فصحى مبسّطة، أو بلهجته إن كتب بها).\n- ابدأ بالجواب مباشرة ثم أضف التفاصيل عند الحاجة. كن دقيقاً ومختصراً.\n- استخدم Markdown: عناوين قصيرة وقوائم وجداول للمقارنة وكتل كود مع اسم اللغة.\n- إن لم تكن متأكداً فقل ذلك صراحة، ولا تخترع معلومات أو مصادر أو روابط.\n- يستطيع المستخدم طلب صورة بكتابة "ارسم ..." أو من تبويب الصور، وطلب بحث من زر البحث بالويب. لا تدّعِ أنك أنشأت صورة أو بحثت في الويب إن لم يحدث ذلك فعلاً في هذه المحادثة.\n- إن سُئلت عن هويتك فأنت iso.1، ولا تذكر تفاصيل النموذج الداخلي لأنك لا تعرفها بدقة.';
+var PERSONA='أنت iso.1، مساعد ذكاء اصطناعي ذكي ودود.\n- أجب بلغة المستخدم نفسها وبأسلوب طبيعي (فصحى مبسّطة، أو بلهجته إن كتب بها).\n- ابدأ بالجواب مباشرة ثم أضف التفاصيل عند الحاجة. كن دقيقاً ومختصراً.\n- استخدم Markdown: عناوين قصيرة وقوائم وجداول للمقارنة وكتل كود مع اسم اللغة.\n- إن لم تكن متأكداً فقل ذلك صراحة، ولا تخترع معلومات أو مصادر أو روابط.\n- يستطيع المستخدم طلب صورة بكتابة "ارسم ..." أو من تبويب الصور، وطلب بحث من زر البحث بالويب. لا تدّعِ أنك أنشأت صورة أو بحثت في الويب إن لم يحدث ذلك فعلاً في هذه المحادثة.\n- إن سُئلت عن هويتك فأنت iso.1، ولا تذكر تفاصيل النموذج الداخلي لأنك لا تعرفها بدقة.\n- عند طلب مخطط أو رسم بياني للعلاقات أو الخطوات، اكتبه ككتلة ```mermaid (مثل flowchart). وعند طلب كود بايثون قابل للتشغيل اكتبه في كتلة ```python كاملة ويطبع نتيجته بـ print.';
 var SUGGEST=['اشرح لي الذكاء الاصطناعي ببساطة','ارسم قطة رائد فضاء بأسلوب أيزومتري','اكتب رسالة اعتذار مهذبة عن التأخر في العمل','ما الفرق بين HTTP و HTTPS؟','اقترح علي ٥ أفكار مشاريع صغيرة'];
 var STYLES={none:['بدون',''],real:['واقعي',', photorealistic, natural lighting, high detail'],anime:['أنمي',', anime style, vibrant colors, clean line art'],d3:['ثلاثي الأبعاد',', 3D render, soft studio lighting'],iso:['أيزومتري',', isometric illustration, clean geometry, soft shadows'],oil:['رسم زيتي',', oil painting, visible brush strokes'],water:['ألوان مائية',', watercolor illustration, soft washes'],cyber:['سايبربانك',', cyberpunk, neon lights, rainy night'],logo:['شعار',', minimal vector logo, flat design, white background'],pixel:['بكسل',', pixel art, 16-bit']};
 
@@ -859,6 +881,8 @@ function paintMsg(m){
 }
 function onMsgClick(e){
   var b=e.target.closest('[data-act]');if(!b)return;var act=b.getAttribute('data-act'),mEl=b.closest('[data-mid]'),mid=mEl&&mEl.getAttribute('data-mid'),c=curChat(),m=c&&c.msgs.filter(function(x){return x.id===mid;})[0];
+  if(act==='runpy'){runPy(b);return;}
+  if(act==='runmmd'){runMmd(b);return;}
   if(act==='copycode'){copyText(b.closest('.code').querySelector('code').textContent);}
   else if(act==='copy'&&m)copyText(m.content);
   else if(act==='speak'&&m)speak(m.content);
