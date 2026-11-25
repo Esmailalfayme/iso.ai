@@ -6,15 +6,15 @@
 <meta name="theme-color" content="#F2F4F6">
 <title>iso.1 — ذكاء اصطناعي عربي: محادثة، صور، بحث وتلخيص</title>
 <meta name="description" content="iso.1 مساعد ذكاء اصطناعي مجاني يجيب عن أسئلتك، ويرسم الصور، ويبحث ويكتب تقارير، ويعيد صياغة النصوص ويلخصها ويترجمها ويدققها لغوياً.">
-<link rel="canonical" href="https://YOUR-SITE.netlify.app/">
+<link rel="canonical" href="https://esmailalfayme.github.io/iso.ai/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="iso.1 — ذكاء اصطناعي عربي: محادثة، صور، بحث وتلخيص">
 <meta property="og:description" content="iso.1 مساعد ذكاء اصطناعي مجاني يجيب عن أسئلتك، ويرسم الصور، ويبحث ويكتب تقارير، ويعيد صياغة النصوص ويلخصها ويترجمها ويدققها لغوياً.">
-<meta property="og:url" content="https://YOUR-SITE.netlify.app/">
+<meta property="og:url" content="https://esmailalfayme.github.io/iso.ai/">
 <meta property="og:locale" content="ar_AR">
 <meta name="twitter:card" content="summary">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "iso.1", "url": "https://YOUR-SITE.netlify.app/", "inLanguage": "ar", "applicationCategory": "UtilitiesApplication", "description": "iso.1 مساعد ذكاء اصطناعي مجاني يجيب عن أسئلتك، ويرسم الصور، ويبحث ويكتب تقارير، ويعيد صياغة النصوص ويلخصها ويترجمها ويدققها لغوياً.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 28 10 16 17 4 10z' fill='%233FA3D6'/%3E%3Cpath d='M4 10 16 17v12L4 22z' fill='%230A6FA8'/%3E%3Cpath d='M28 10 16 17v12l12-7z' fill='%23064B73'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "iso.1", "url": "https://esmailalfayme.github.io/iso.ai/", "inLanguage": "ar", "applicationCategory": "UtilitiesApplication", "description": "iso.1 مساعد ذكاء اصطناعي مجاني يجيب عن أسئلتك، ويرسم الصور، ويبحث ويكتب تقارير، ويعيد صياغة النصوص ويلخصها ويترجمها ويدققها لغوياً.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233FA3D6'/%3E%3Cstop offset='1' stop-color='%23064B73'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='15' fill='url(%23g)'/%3E%3Crect x='14' y='14' width='4' height='10' rx='2' fill='white'/%3E%3Cpath d='M16 4.2c.5 2.4 1.9 3.8 4.3 4.3-2.4.5-3.8 1.9-4.3 4.3-.5-2.4-1.9-3.8-4.3-4.3 2.4-.5 3.8-1.9 4.3-4.3z' fill='white'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
 <style>
@@ -49,6 +49,7 @@ a{color:var(--accent)}
 .side-f{display:flex;gap:4px;padding:8px 12px;border-top:1px solid var(--line)}
 .side-f .nav-b{flex:1;justify-content:center;gap:8px;font-size:14px}
 #scrim{display:none}
+#scrim.show{display:block;position:fixed;inset:0;z-index:25;background:transparent}
 main{flex:1;min-width:0;display:flex;flex-direction:column}
 .top{display:flex;align-items:center;gap:4px;height:56px;flex:none;padding:env(safe-area-inset-top,0) max(8px,env(safe-area-inset-right,0)) 0 max(8px,env(safe-area-inset-left,0));box-sizing:content-box;border-bottom:1px solid var(--line);background:var(--surface)}
 .top h1{flex:1;margin:0;font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
@@ -181,22 +182,48 @@ main{flex:1;min-width:0;display:flex;flex-direction:column}
 @media (min-width:600px){#modal{align-items:center}#sheet{border-radius:20px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
+
+/* ---- redesign: top glass bar, no sidebar ---- */
+body{background:radial-gradient(900px 480px at 80% -10%,color-mix(in srgb,var(--accent-2) 22%,transparent),transparent 60%),radial-gradient(700px 420px at 0% 100%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 60%),var(--bg)}
+#app{background:transparent;flex-direction:column}
+.top{height:auto!important;min-height:64px;gap:10px!important;padding:10px max(12px,env(safe-area-inset-right,0)) 6px max(12px,env(safe-area-inset-left,0))!important;border-bottom:0!important;background:transparent!important;justify-content:space-between;position:relative;z-index:20}
+.brandmini{display:flex;align-items:center;gap:8px;flex:none;text-decoration:none;color:var(--fg)}
+.word{font-family:'IBM Plex Mono',ui-monospace,monospace;font-weight:600;font-size:21px;letter-spacing:-.5px;direction:ltr}
+.word b{color:var(--accent-2)}
+.glassbar{display:flex;align-items:center;gap:2px;padding:5px;border-radius:999px;background:color-mix(in srgb,var(--surface) 60%,transparent);border:1px solid color-mix(in srgb,var(--line) 70%,transparent);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);box-shadow:0 8px 28px rgba(6,75,115,.12);min-width:0}
+#nav{padding:5px;overflow:visible;flex:none}
+.gi{position:relative;width:40px;height:40px;flex:none;display:grid;place-items:center;border:0;background:none;border-radius:999px;cursor:pointer;color:var(--fg);transition:background .15s,transform .15s}
+.gi:hover{background:color-mix(in srgb,var(--accent) 14%,transparent);transform:translateY(-1px)}
+.gi.on{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:#fff;box-shadow:0 4px 14px color-mix(in srgb,var(--accent) 45%,transparent)}
+.gi[data-tip]:hover::after{content:attr(data-tip);position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);font-size:12px;padding:3px 8px;border-radius:8px;white-space:nowrap;pointer-events:none;z-index:5}
+.gsep{width:1px;height:22px;background:var(--line);margin:0 4px;flex:none}
+#pop{position:absolute;top:70px;left:50%;right:auto;transform:translateX(-50%);z-index:30;width:min(360px,calc(100vw - 24px));max-height:70vh;overflow:auto;padding:10px;border-radius:22px;background:color-mix(in srgb,var(--surface) 82%,transparent);border:1px solid var(--line);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 20px 50px rgba(6,75,115,.22)}
+#pop .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+#pop .tbtn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border:0;background:none;border-radius:16px;cursor:pointer;color:var(--fg);font-size:13px}
+#pop .tbtn:hover,#pop .tbtn.on{background:var(--soft);color:var(--accent-3)}
+#hist{padding:0;min-height:0}
+.hist-h{padding:4px 8px 8px;font-size:13px;color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn.pri,.send{background:linear-gradient(135deg,var(--accent-2),var(--accent))!important;border-color:transparent!important;color:#fff!important;box-shadow:0 6px 18px color-mix(in srgb,var(--accent) 35%,transparent)}
+.cbox{border-radius:24px;background:color-mix(in srgb,var(--surface) 75%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.hero{background:none;padding-top:9vh}
+.hero-word{font-size:46px}
+.hero-word b{color:var(--accent-2)}
+.hero-mark{filter:drop-shadow(0 10px 22px color-mix(in srgb,var(--accent) 40%,transparent))}
+.panel,.out,.sources{border-radius:20px;background:color-mix(in srgb,var(--surface) 80%,transparent);backdrop-filter:blur(10px)}
+.srcbox{border:1px dashed var(--line);border-radius:14px;padding:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.srcbox img{height:64px;border-radius:10px}
+#scrim.show{background:transparent!important}
+@media (max-width:640px){.word{display:none}.gi{width:36px;height:36px}.glassbar{padding:4px}#nav{padding:4px}.top{gap:6px!important}.tg span{display:none}.tg{padding:0 10px}}
+@media (max-width:380px){.gsep{display:none}.gi{width:33px;height:33px}}
 </style>
 </head>
 <body>
 <noscript><main style="padding:24px;font-family:sans-serif"><h1>iso.1 — مساعد ذكاء اصطناعي</h1><p>iso.1 مساعد ذكاء اصطناعي مجاني يجيب عن أسئلتك، ويرسم الصور، ويبحث ويكتب تقارير، ويعيد صياغة النصوص ويلخصها ويترجمها ويدققها لغوياً.</p><ul><li>محادثة ذكية</li><li>توليد الصور</li><li>بحث وكتابة تقارير بالمصادر</li><li>إعادة صياغة وتلخيص وترجمة وتدقيق لغوي</li><li>كتابة رسائل ومنشورات ومساعدة في الدراسة والبرمجة</li></ul><p>فعّل JavaScript لاستخدام الموقع.</p></main></noscript>
 <div id="app">
- <aside id="side" aria-label="القائمة">
-  <div class="brand"><span id="logoSide"></span><span class="word">iso<b>.</b>1</span></div>
-  <button class="btn pri" id="newChat" type="button">محادثة جديدة</button>
-  <nav id="nav"></nav>
-  <div class="hist-h">المحادثات</div>
-  <div id="hist"></div>
-  <div class="side-f"><button class="nav-b" id="openSettings" type="button">الإعدادات</button><button class="nav-b" id="themeBtn" type="button">المظهر</button></div>
- </aside>
- <div id="scrim"></div>
- <main>
-  <header class="top"><button class="ib" id="menuBtn" type="button" aria-label="القائمة"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><h1 id="title">iso.1</h1><div id="topActions"></div></header>
+ <header class="top"><a class="brandmini" href="./" aria-label="iso.1"><span id="logoTop"></span><span class="word">iso<b>.</b>1</span></a><h1 id="title" class="sr">iso.1</h1><nav id="nav" class="glassbar" aria-label="التنقل"></nav><div id="topActions" class="glassbar"></div></header>
+  <div id="pop" hidden></div>
+  <div id="scrim"></div>
   <div id="view"></div>
  </main>
 </div>
@@ -329,9 +356,12 @@ moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
 plus:'<path d="M12 5v14M5 12h14"/>',
 x:'<path d="M18 6 6 18M6 6l12 12"/>',
 globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
-ok:'<path d="m20 6-11 11-5-5"/>'};
+ok:'<path d="m20 6-11 11-5-5"/>',
+grid:'<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/>',
+clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'};
 function ico(n,s){return '<svg class="ic" width="'+(s||20)+'" height="'+(s||20)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(IC[n]||'')+'</svg>';}
-function logoSvg(s){return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 28 10 16 17 4 10z" fill="var(--accent-2)"/><path d="M4 10 16 17v12L4 22z" fill="var(--accent)"/><path d="M28 10 16 17v12l12-7z" fill="var(--accent-3)"/></svg>';}
+function logoSvg(s){return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lgG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent-2)"/><stop offset="1" style="stop-color:var(--accent-3)"/></linearGradient></defs><circle cx="16" cy="16" r="15" fill="url(#lgG)"/><rect x="14" y="14" width="4" height="10" rx="2" fill="#fff"/><path d="M16 4.2c.5 2.4 1.9 3.8 4.3 4.3-2.4.5-3.8 1.9-4.3 4.3-.5-2.4-1.9-3.8-4.3-4.3 2.4-.5 3.8-1.9 4.3-4.3z" fill="#fff"/></svg>';}
 
 /* ---------- config / state ---------- */
 var PUB=window.ISO_PUB||null;
@@ -344,7 +374,7 @@ var PROVIDERS={
  gemini:{label:'Google Gemini',base:'https://generativelanguage.googleapis.com/v1beta/openai',model:'gemini-flash-latest',link:'https://aistudio.google.com/apikey',hint:'مفتاح مجاني من Google AI Studio.'},
  ollama:{label:'Ollama (على جهازك)',base:'http://localhost:11434/v1',model:'llama3.2',link:'',hint:'شغّل Ollama على جهازك وفعّل OLLAMA_ORIGINS=* ليقبل الاتصال من المتصفح.'},
  custom:{label:'مخصص (متوافق مع OpenAI)',base:'',model:'',link:'',hint:'أي خدمة تدعم مسار /chat/completions بصيغة OpenAI.'}};
-var DEF={provider:PUB?'iso':'pollinations',base:'',key:'',model:'',imgProvider:PUB?'iso':'pollinations',imgKey:'',imgModel:'flux',tavily:'',searchModel:'',name:'',lang:'auto',persona:'',temp:0.7,dictLang:'ar-EG',theme:'auto',enhance:true};
+var DEF={provider:PUB?'iso':'pollinations',base:'',key:'',model:'',imgProvider:PUB?'iso':'pollinations',imgKey:'',imgModel:'black-forest-labs/flux.1.1-pro',tavily:'',searchModel:'',name:'',lang:'auto',persona:'',temp:0.7,dictLang:'ar-EG',theme:'auto',enhance:true};
 var S=Object.assign({},DEF,LS.get('iso1.s',{}));
 function saveS(){LS.set('iso1.s',S);}
 var chats=(LS.get('iso1.chats',[])||[]).map(function(c){c.msgs=(c.msgs||[]).filter(function(m){return m.role==='user'||m.content||m.gen||m.err;});return c;});
@@ -448,7 +478,8 @@ async function listModels(kind){
   return arr.map(function(x){return typeof x==='string'?x:(x.id||x.name||'');}).filter(Boolean);
 }
 async function genImage(o){
-  if(S.imgProvider==='iso'&&PUB){
+  var pkey=S.imgKey||(S.provider==='pollinations'?S.key:'');
+  if(S.imgProvider!=='compat'&&PUB&&!pkey){
     var iu=PUB.url+'/functions/v1/'+PUB.fn+'/image?prompt='+encodeURIComponent(String(o.prompt).slice(0,1200))+'&width='+o.w+'&height='+o.h+'&seed='+o.seed,ir;
     try{ir=await fetchT(iu,{headers:{Authorization:'Bearer '+PUB.anon,apikey:PUB.anon},signal:o.signal},120000);}catch(e){throw netErr(e);}
     if(!ir.ok)throw httpErr(ir,await ir.text().catch(function(){return '';}));
@@ -471,17 +502,29 @@ async function genImage(o){
   if(!/^image\//.test(blob.type)){var tx=await blob.text();throw new Error('لم تُرجع الخدمة صورة: '+tx.slice(0,160));}
   return{blob:blob};
 }
+async function editImage(o){
+  var key=S.imgKey||(S.provider==='pollinations'?S.key:'');
+  if(!key){var e=new Error('تعديل الصور يحتاج مفتاح Pollinations المجاني. الصقه من الإعدادات (حقل مفتاح الصور).');e.status=401;throw e;}
+  var fd=new FormData();fd.append('prompt',o.prompt);fd.append('model',o.model||'black-forest-labs/flux.1-kontext-pro');
+  fd.append('image',dataURLToBlob(o.src),'image.jpg');
+  var res;try{res=await fetchT('https://gen.pollinations.ai/v1/images/edits',{method:'POST',headers:{Authorization:'Bearer '+key},body:fd,signal:o.signal},150000);}catch(e){throw netErr(e);}
+  if(!res.ok)throw httpErr(res,await res.text().catch(function(){return '';}));
+  var j=await res.json(),it=j.data&&j.data[0];if(!it)throw new Error('لم تُرجع الخدمة صورة.');
+  if(it.b64_json)return{blob:dataURLToBlob('data:image/png;base64,'+it.b64_json)};
+  if(it.url){var r2=await fetchT(it.url,{signal:o.signal},60000);return{blob:await r2.blob()};}
+  throw new Error('لم تُرجع الخدمة صورة.');
+}
 async function enhancePrompt(p,sig){
   var t=await chatCall([{role:'system',content:'You write prompts for text-to-image models. Convert the user\'s request (any language) into ONE vivid English prompt (subject, setting, lighting, composition, style), max 70 words. Keep every detail the user gave. No text or watermarks in the image. Output only the prompt.'},{role:'user',content:p}],{temperature:0.7,signal:sig,timeout:25000});
   t=(t||'').trim().replace(/^["'`]+|["'`]+$/g,'');return(t&&t.length<700)?t:p;
 }
 async function makeImage(o){
   var p=o.prompt;
-  if(o.enhance){if(o.onStatus)o.onStatus('تحسين الوصف…');try{p=await enhancePrompt(p,o.signal);}catch(e){if(e.name==='AbortError')throw e;p=o.prompt;}}
-  if(o.style&&STYLES[o.style])p+=STYLES[o.style][1];
+  if(o.enhance&&!o.src){if(o.onStatus)o.onStatus('تحسين الوصف…');try{p=await enhancePrompt(p,o.signal);}catch(e){if(e.name==='AbortError')throw e;p=o.prompt;}}
+  if(!o.src&&o.style&&STYLES[o.style])p+=STYLES[o.style][1];
   var sz=RATIOS[o.ratio||'1:1'],seed=Math.floor(Math.random()*1e9);
   if(o.onStatus)o.onStatus('جارٍ الرسم…');
-  var r=await genImage({prompt:p,w:sz[0],h:sz[1],seed:seed,model:o.model||S.imgModel,signal:o.signal});
+  var r=o.src?await editImage({prompt:o.prompt,src:o.src,model:o.editModel,signal:o.signal}):await genImage({prompt:p,w:sz[0],h:sz[1],seed:seed,model:o.model||S.imgModel,signal:o.signal});
   r.prompt=p;r.ratio=o.ratio||'1:1';
   if(r.blob){r.objUrl=URL.createObjectURL(r.blob);try{r.thumb=await blobThumb(r.blob,640);}catch(e){}}
   return r;
@@ -567,32 +610,42 @@ var NAV=[['chat','محادثة','chat'],['image','صور','image'],['research','
 function viewTitle(id){return id==='chat'?'محادثة':id==='image'?'صور':TOOLS[id].nav;}
 
 /* ---------- shell ---------- */
+function gbtn(icon,label,fn,v){return h('button',{class:'gi'+(v?' nav-b':''),'data-v':v||null,'data-tip':label,type:'button','aria-label':label,onclick:fn,html:ico(icon,20)});}
 function renderNav(){
   var nav=$('#nav');nav.innerHTML='';
-  NAV.forEach(function(n,i){
-    if(i===3)nav.appendChild(h('div',{class:'nav-h'},'أدوات'));
-    nav.appendChild(h('button',{class:'nav-b','data-v':n[0],type:'button',onclick:function(){go(n[0]);}},h('span',{html:ico(n[2],20)}),h('span',null,viewTitle(n[0]))));
-  });
+  nav.appendChild(gbtn('plus','محادثة جديدة',newChatClick));
+  nav.appendChild(h('span',{class:'gsep'}));
+  NAV.slice(0,3).forEach(function(n){nav.appendChild(gbtn(n[2],viewTitle(n[0]),function(){go(n[0]);},n[0]));});
+  var tb=gbtn('grid','الأدوات',function(e){e.stopPropagation();openPop('tools');});tb.id='toolsBtn';nav.appendChild(tb);
+  var top=$('#topActions');top.innerHTML='';
+  top.appendChild(gbtn('clock','المحادثات',function(e){e.stopPropagation();openPop('hist');}));
+  var th=gbtn('sun','المظهر',function(){S.theme=S.theme==='dark'?'light':S.theme==='light'?'auto':'dark';saveS();applyTheme();toast({dark:'المظهر: داكن',light:'المظهر: فاتح',auto:'المظهر: حسب الجهاز'}[S.theme]);});top.appendChild(th);
+  top.appendChild(gbtn('sliders','الإعدادات',openSettings));
   markNav();
 }
-function markNav(){$$('.nav-b').forEach(function(b){var on=b.getAttribute('data-v')===UI.view;b.classList.toggle('on',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});}
-function openDrawer(){$('#side').classList.add('open');$('#scrim').classList.add('show');}
-function closeDrawer(){$('#side').classList.remove('open');$('#scrim').classList.remove('show');}
+function markNav(){$$('#nav .nav-b').forEach(function(b){var on=b.getAttribute('data-v')===UI.view;b.classList.toggle('on',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});var tb=$('#toolsBtn');if(tb)tb.classList.toggle('on',!!TOOLS[UI.view]);}
+var POP=null;
+function openPop(kind){
+  if(POP===kind){closePop();return;}
+  var p=$('#pop');p.innerHTML='';POP=kind;
+  if(kind==='tools'){var g=h('div',{class:'tgrid'});NAV.slice(3).forEach(function(n){g.appendChild(h('button',{type:'button',class:'tbtn'+(UI.view===n[0]?' on':''),onclick:function(){go(n[0]);}},h('span',{html:ico(n[2],24)}),h('span',null,viewTitle(n[0]))));});p.appendChild(g);}
+  else{p.appendChild(h('div',{class:'hist-h'},'المحادثات'));p.appendChild(h('div',{id:'hist'}));renderHistory();}
+  p.hidden=false;$('#scrim').classList.add('show');
+}
+function closePop(){POP=null;var p=$('#pop');if(p)p.hidden=true;var sc=$('#scrim');if(sc)sc.classList.remove('show');}
+function closeDrawer(){closePop();}
 function go(id){
   if(id!=='chat'&&id!=='image'&&!TOOLS[id])id='chat';
   UI.view=id;LS.set('iso1.view',id);markNav();$('#title').textContent=viewTitle(id);closeDrawer();
-  var top=$('#topActions');top.innerHTML='';
-  if(id==='chat')top.appendChild(h('button',{class:'ib',type:'button','aria-label':'محادثة جديدة',onclick:newChatClick,html:ico('plus')}));
-  top.appendChild(h('button',{class:'ib',type:'button','aria-label':'الإعدادات',onclick:openSettings,html:ico('sliders')}));
   var root=$('#view');root.innerHTML='';
   if(id==='chat')renderChat(root);else if(id==='image')renderImage(root);else renderTool(root,id);
   renderHistory();
 }
 function renderHistory(){
-  var box=$('#hist');box.innerHTML='';
+  var box=$('#hist');if(!box)return;box.innerHTML='';
   if(!chats.length){box.appendChild(h('div',{class:'hist-empty'},'لا توجد محادثات بعد'));return;}
   chats.forEach(function(c){box.appendChild(h('div',{class:'hist-i'+(c.id===curId&&UI.view==='chat'?' on':'')},
-    h('button',{class:'hist-t',type:'button',onclick:function(){curId=c.id;LS.set('iso1.cur',curId);go('chat');}},c.title||'محادثة'),
+    h('button',{class:'hist-t',type:'button',onclick:function(){curId=c.id;LS.set('iso1.cur',curId);go('chat');closePop();}},c.title||'محادثة'),
     h('button',{class:'ib sm',type:'button','aria-label':'حذف المحادثة',onclick:function(e){e.stopPropagation();delChat(c.id);},html:ico('trash',16)})));});
 }
 function delChat(id){if(UI.busy&&curId===id&&UI.ctrl)UI.ctrl.abort();chats=chats.filter(function(c){return c.id!==id;});if(curId===id)curId=chats.length?chats[0].id:null;saveChats();if(UI.view==='chat')go('chat');else renderHistory();}
@@ -608,7 +661,7 @@ function sysPrompt(){
   return s;
 }
 function renderChat(root){
-  root.innerHTML='<div class="chat"><div class="msgs" id="msgs"><div class="wrap" id="mw" role="log" aria-live="polite"></div></div><div class="composer"><div class="cbox"><div class="prev" id="prev" hidden></div><textarea class="ta" id="ta" rows="1" placeholder="اسأل iso.1 أو اطلب صورة…" aria-label="رسالتك"></textarea><div class="crow"><button type="button" class="ib" id="bAtt" aria-label="إرفاق صورة">'+ico('clip')+'</button><button type="button" class="ib" id="bMic" aria-label="إملاء صوتي">'+ico('mic')+'</button><button type="button" class="tg" id="tWeb" aria-pressed="false">'+ico('globe',16)+'<span>بحث بالويب</span></button><button type="button" class="tg" id="tImg" aria-pressed="false">'+ico('image',16)+'<span>صورة</span></button><button type="button" class="send" id="bSend" aria-label="إرسال">'+ico('send')+'</button></div></div><input type="file" id="fIn" accept="image/*" hidden></div></div>';
+  root.innerHTML='<div class="chat"><div class="msgs" id="msgs"><div class="wrap" id="mw" role="log" aria-live="polite"></div></div><div class="composer"><div class="cbox"><div class="prev" id="prev" hidden></div><textarea class="ta" id="ta" rows="1" placeholder="اكتب رسالتك هنا…" aria-label="رسالتك"></textarea><div class="crow"><button type="button" class="ib" id="bAtt" aria-label="إرفاق صورة">'+ico('clip')+'</button><button type="button" class="ib" id="bMic" aria-label="إملاء صوتي">'+ico('mic')+'</button><button type="button" class="tg" id="tWeb" aria-pressed="false">'+ico('globe',16)+'<span>بحث بالويب</span></button><button type="button" class="tg" id="tImg" aria-pressed="false">'+ico('image',16)+'<span>صورة</span></button><button type="button" class="send" id="bSend" aria-label="إرسال">'+ico('send')+'</button></div></div><input type="file" id="fIn" accept="image/*" hidden></div></div>';
   var ta=$('#ta'),fIn=$('#fIn');
   ta.addEventListener('input',function(){autosize(ta);});
   ta.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&!COARSE){e.preventDefault();doSend();}});
@@ -628,9 +681,9 @@ async function attachFile(f){try{var raw=await readFileURL(f),full=await imgResi
 function doSend(){var ta=$('#ta');var t=ta.value;if(!t.trim()&&!UI.attach)return;ta.value='';autosize(ta);submit(t);}
 function heroEl(){
   var d=h('div',{class:'hero'});
-  d.innerHTML='<div class="hero-mark">'+logoSvg(54)+'</div><div class="hero-word">iso<b>.</b>1</div><p class="hero-sub">'+(S.name?'أهلاً '+esc(S.name)+'، ':'')+'اسأل، اطلب صورة، ابحث في الويب، أو أعد صياغة نص.</p>';
-  if(needsKey())d.appendChild(h('div',{class:'notice'},h('b',null,'خطوة واحدة للبدء'),h('p',null,'يحتاج الموقع إلى مفتاح مجاني من Pollinations ليتصل بنموذج الذكاء الاصطناعي. أنشئ المفتاح ثم الصقه في الإعدادات (أو اختر مزوّداً آخر).'),h('div',{class:'row'},h('a',{class:'btn sm',href:'https://enter.pollinations.ai',target:'_blank',rel:'noopener'},'إنشاء مفتاح مجاني'),h('button',{class:'btn sm pri',type:'button',onclick:openSettings},'فتح الإعدادات'))));
-  var chips=h('div',{class:'chips'});SUGGEST.forEach(function(s){chips.appendChild(h('button',{type:'button',class:'chip',onclick:function(){submit(s);}},s));});d.appendChild(chips);return d;
+  d.innerHTML='<div class="hero-mark">'+logoSvg(54)+'</div><div class="hero-word">iso<b>.</b>1</div><p class="hero-sub">'+(S.name?'أهلاً '+esc(S.name)+'، ':'')+'اسأل أي سؤال، أو اطلب صورة، أو ابحث في الويب.</p>';
+  if(needsKey())d.appendChild(h('div',{class:'notice'},h('b',null,'خطوة واحدة للبدء'),h('p',null,'للبدء، أنشئ مفتاحاً مجانياً من Pollinations والصقه في الإعدادات، أو اختر مزوّداً آخر.'),h('div',{class:'row'},h('a',{class:'btn sm',href:'https://enter.pollinations.ai',target:'_blank',rel:'noopener'},'إنشاء مفتاح مجاني'),h('button',{class:'btn sm pri',type:'button',onclick:openSettings},'فتح الإعدادات'))));
+  return d;
 }
 function scrollDown(force){var m=$('#msgs');if(!m)return;if(force||m.scrollHeight-m.scrollTop-m.clientHeight<140)m.scrollTop=m.scrollHeight;}
 function renderMsgs(){var w=$('#mw');if(!w)return;var c=curChat();w.innerHTML='';if(!c||!c.msgs.length){w.appendChild(heroEl());return;}c.msgs.forEach(function(m,i){w.appendChild(msgEl(m,i===c.msgs.length-1));});scrollDown(true);}
@@ -731,12 +784,12 @@ function regen(){
 }
 
 /* ---------- image view ---------- */
-var IM={prompt:'',style:'none',ratio:'1:1',n:1,model:null,enhance:null,items:[],busy:false,ctrl:null};
+var IM={src:null,prompt:'',style:'none',ratio:'1:1',n:1,model:null,enhance:null,items:[],busy:false,ctrl:null};
 function renderImage(root){
   if(IM.model==null)IM.model=S.imgModel;if(IM.enhance==null)IM.enhance=S.enhance;
   var st=Object.keys(STYLES).map(function(k){return'<button type="button" class="chip'+(IM.style===k?' on':'')+'" data-style="'+k+'">'+STYLES[k][0]+'</button>';}).join('');
   var rt=Object.keys(RATIOS).map(function(k){return'<button type="button" class="chip'+(IM.ratio===k?' on':'')+'" data-ratio="'+k+'" dir="ltr">'+k+'</button>';}).join('');
-  root.innerHTML='<div class="scroll"><div class="wrap tool"><p class="lead">صف الصورة بأي لغة. يحسّن iso.1 الوصف تلقائياً ثم يرسمها.</p><div class="panel"><div class="field"><label for="ip">وصف الصورة</label><textarea class="textarea" id="ip" rows="3" placeholder="مثال: مدينة مستقبلية عند الغروب فوق الغيوم"></textarea></div><div class="field"><label>الأسلوب</label><div class="chiprow" id="stRow">'+st+'</div></div><div class="field"><label>الأبعاد</label><div class="chiprow" id="rtRow">'+rt+'</div></div><div class="opts"><div class="field"><label for="in">العدد</label><select class="select" id="in"><option>1</option><option>2</option><option>4</option></select></div><div class="field"><label for="im">النموذج</label><input class="input" id="im" list="dlImg" dir="ltr"><datalist id="dlImg"></datalist></div></div><label class="chk"><input type="checkbox" id="ie"> تحسين الوصف تلقائياً (يترجمه ويضيف تفاصيل)</label><div class="row"><button class="btn pri" id="ig" type="button">أنشئ الصورة</button><button class="btn" id="is" type="button" hidden>إيقاف</button></div></div><div class="img-grid" id="ires"></div><h3 class="sec">المعرض</h3><div class="img-grid" id="igal"></div></div></div>';
+  root.innerHTML='<div class="scroll"><div class="wrap tool"><p class="lead">اكتب وصف الصورة بأي لغة، وسيحسّنه iso.1 تلقائياً ثم يرسمها. يمكنك أيضاً رفع صورة وتعديلها بالوصف.</p><div class="panel"><div class="field"><label for="ip">وصف الصورة</label><textarea class="textarea" id="ip" rows="3" placeholder="مثال: مدينة مستقبلية عند الغروب فوق الغيوم"></textarea></div><div class="field"><label>صورة لتعديلها (اختياري)</label><div class="srcbox" id="srcBox"><button class="btn sm" id="srcPick" type="button">رفع صورة</button><input type="file" id="srcFile" accept="image/*" hidden><span id="srcPrev"></span></div></div><div class="field"><label>الأسلوب</label><div class="chiprow" id="stRow">'+st+'</div></div><div class="field"><label>الأبعاد</label><div class="chiprow" id="rtRow">'+rt+'</div></div><div class="opts"><div class="field"><label for="in">العدد</label><select class="select" id="in"><option>1</option><option>2</option><option>4</option></select></div><div class="field"><label for="im">النموذج</label><input class="input" id="im" list="dlImg" dir="ltr"><datalist id="dlImg"></datalist></div></div><label class="chk"><input type="checkbox" id="ie"> تحسين الوصف تلقائياً (يترجمه ويضيف تفاصيل)</label><div class="row"><button class="btn pri" id="ig" type="button">أنشئ / عدّل الصورة</button><button class="btn" id="is" type="button" hidden>إيقاف</button></div></div><div class="img-grid" id="ires"></div><h3 class="sec">المعرض</h3><div class="img-grid" id="igal"></div></div></div>';
   $('#ip').value=IM.prompt;$('#in').value=String(IM.n);$('#im').value=IM.model;$('#ie').checked=IM.enhance;
   $('#ip').addEventListener('input',function(){IM.prompt=this.value;});
   $('#in').addEventListener('change',function(){IM.n=+this.value;});
@@ -744,6 +797,10 @@ function renderImage(root){
   $('#ie').addEventListener('change',function(){IM.enhance=this.checked;});
   $('#stRow').addEventListener('click',function(e){var b=e.target.closest('[data-style]');if(!b)return;IM.style=b.getAttribute('data-style');$$('#stRow .chip').forEach(function(x){x.classList.toggle('on',x===b);});});
   $('#rtRow').addEventListener('click',function(e){var b=e.target.closest('[data-ratio]');if(!b)return;IM.ratio=b.getAttribute('data-ratio');$$('#rtRow .chip').forEach(function(x){x.classList.toggle('on',x===b);});});
+  $('#srcPick').addEventListener('click',function(){$('#srcFile').click();});
+  $('#srcFile').addEventListener('change',async function(){var f=this.files&&this.files[0];if(!f)return;try{var raw=await readFileURL(f),full=await imgResize(raw,1280,0.9);IM.src=full;paintSrc();}catch(e){toast('تعذّر قراءة الصورة');}});
+  function paintSrc(){var b=$('#srcPrev');if(!b)return;b.innerHTML='';if(!IM.src)return;b.appendChild(h('img',{src:IM.src,alt:'الصورة المراد تعديلها'}));b.appendChild(h('button',{class:'btn sm',type:'button',onclick:function(){IM.src=null;paintSrc();}},'إزالة'));}
+  paintSrc();
   $('#ig').addEventListener('click',genImages);
   $('#is').addEventListener('click',function(){if(IM.ctrl)IM.ctrl.abort();});
   if(S.imgProvider!=='compat')listModels('image').then(function(l){var d=$('#dlImg');if(d)d.innerHTML=l.map(function(x){return'<option value="'+esc(x)+'">';}).join('');}).catch(function(){});
@@ -777,7 +834,7 @@ async function genImages(){
   for(var k=0;k<batch.length;k++){
     var cur=batch[k];
     try{
-      var r=await makeImage({prompt:p,style:IM.style,ratio:IM.ratio,model:IM.model,enhance:IM.enhance,signal:IM.ctrl.signal,onStatus:function(s){cur.status=s;paintImages();}});
+      var r=await makeImage({src:IM.src,editModel:IM.src?'black-forest-labs/flux.1-kontext-pro':null,prompt:p,style:IM.style,ratio:IM.ratio,model:IM.model,enhance:IM.enhance,signal:IM.ctrl.signal,onStatus:function(s){cur.status=s;paintImages();}});
       cur.objUrl=r.objUrl;cur.blob=r.blob;cur.thumb=r.thumb;cur.url=r.url;cur.prompt=r.prompt;
       if(r.thumb){gallery.unshift({id:cur.id,prompt:r.prompt,ratio:r.ratio,thumb:r.thumb,ts:Date.now()});saveGallery();}
     }catch(e){
@@ -883,10 +940,9 @@ function init(){
   applyTheme();fitViewport();
   if(window.visualViewport){visualViewport.addEventListener('resize',fitViewport);visualViewport.addEventListener('scroll',fitViewport);}
   window.addEventListener('resize',fitViewport);
-  $('#logoSide').innerHTML=logoSvg(30);renderNav();
-  $('#menuBtn').addEventListener('click',openDrawer);$('#scrim').addEventListener('click',closeDrawer);
-  $('#newChat').addEventListener('click',newChatClick);$('#openSettings').addEventListener('click',openSettings);
-  $('#themeBtn').addEventListener('click',function(){S.theme=S.theme==='dark'?'light':S.theme==='light'?'auto':'dark';saveS();applyTheme();toast({dark:'المظهر: داكن',light:'المظهر: فاتح',auto:'المظهر: حسب الجهاز'}[S.theme]);});
+  $('#logoTop').innerHTML=logoSvg(32);renderNav();
+  $('#scrim').addEventListener('click',closePop);
+  $('#pop').addEventListener('click',function(e){e.stopPropagation();});
   $('#modal').addEventListener('click',function(e){if(e.target===this)closeSettings();});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!$('#modal').hidden)closeSettings();else closeDrawer();}});
   go(UI.view);
@@ -897,3 +953,4 @@ init();
 </script>
 </body>
 </html>
+
