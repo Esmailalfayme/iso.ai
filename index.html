@@ -381,7 +381,20 @@ function runMmd(b){
     return window.mermaid.render('mm'+Date.now(),code);
   }).then(function(r){o.className='runout mm';o.innerHTML=r.svg;}).catch(function(){o.className='runout err';o.textContent='تعذّر رسم المخطط، تحقق من الصيغة.';});
 }
-function mdCode(code,lang){var lg=String(lang||'').toLowerCase(),rb=(lg==='python'||lg==='py')?'<button type="button" class="mini" data-act="runpy">▶ تشغيل</button>':(lg==='mermaid'?'<button type="button" class="mini" data-act="runmmd">رسم</button>':'');return '<div class="code"><div class="code-h"><span>'+esc(lang||'code')+'</span><span>'+rb+'<button type="button" class="mini" data-act="copycode">نسخ</button></span></div><pre dir="ltr"><code>'+esc(code)+'</code></pre></div>';}
+
+function sandbox(b,html,h){var o=outBox(b,'mm');o.innerHTML='';var f=document.createElement('iframe');f.setAttribute('sandbox','allow-scripts');f.style.cssText='width:100%;border:0;background:#fff;border-radius:8px;height:'+h+'px';f.srcdoc=html;o.appendChild(f);return f;}
+function runJs(b){
+  var code=b.closest('.code').querySelector('code').textContent;
+  var html='<body style="margin:0;font:13px monospace;color:#111;white-space:pre-wrap;padding:8px"><div id=o></div><script>var o=document.getElementById("o");function w(a){o.textContent+=Array.prototype.map.call(a,function(x){try{return typeof x==="object"?JSON.stringify(x):String(x)}catch(e){return String(x)}}).join(" ")+"\\n"}console.log=function(){w(arguments)};console.error=function(){w(arguments)};window.onerror=function(m){o.textContent+="خطأ: "+m+"\\n"};try{'+code.replace(/<\/script/gi,'<\\/script')+'\n}catch(e){o.textContent+="خطأ: "+e.message}<\/script></body>';
+  sandbox(b,html,140);
+}
+function runHtml(b){sandbox(b,b.closest('.code').querySelector('code').textContent,320);}
+function dlCode(b){
+  var code=b.closest('.code').querySelector('code').textContent,lg=(b.getAttribute('data-lg')||'').toLowerCase();
+  var ext={python:'py',py:'py',javascript:'js',js:'js',html:'html',css:'css',json:'json',java:'java',cpp:'cpp',c:'c',sql:'sql',bash:'sh',sh:'sh',typescript:'ts',ts:'ts',php:'php'}[lg]||'txt';
+  var a=document.createElement('a'),u=URL.createObjectURL(new Blob([code],{type:'text/plain;charset=utf-8'}));a.href=u;a.download='iso-code.'+ext;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1000);
+}
+function mdCode(code,lang){var lg=String(lang||'').toLowerCase(),rb=(lg==='python'||lg==='py')?'<button type="button" class="mini" data-act="runpy">▶ تشغيل</button>':(lg==='mermaid'?'<button type="button" class="mini" data-act="runmmd">رسم</button>':((lg==='javascript'||lg==='js')?'<button type="button" class="mini" data-act="runjs">▶ تشغيل</button>':(lg==='html'?'<button type="button" class="mini" data-act="runhtml">▶ معاينة</button>':'')));return '<div class="code"><div class="code-h"><span>'+esc(lang||'code')+'</span><span>'+rb+'<button type="button" class="mini" data-act="dlcode" data-lg="'+esc(lg)+'">تنزيل</button><button type="button" class="mini" data-act="copycode">نسخ</button></span></div><pre dir="ltr"><code>'+esc(code)+'</code></pre></div>';}
 var TSEP=/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/;
 function splitRow(l){l=l.trim();if(l[0]==='|')l=l.slice(1);if(l[l.length-1]==='|')l=l.slice(0,-1);var cells=[],cur='',k;for(k=0;k<l.length;k++){var ch=l[k];if(ch==='\\'&&l[k+1]==='|'){cur+='|';k++;}else if(ch==='|'){cells.push(cur.trim());cur='';}else cur+=ch;}cells.push(cur.trim());return cells;}
 function indentOf(l){return l.match(/^\s*/)[0].replace(/\t/g,'    ').length;}
@@ -882,6 +895,9 @@ function paintMsg(m){
 function onMsgClick(e){
   var b=e.target.closest('[data-act]');if(!b)return;var act=b.getAttribute('data-act'),mEl=b.closest('[data-mid]'),mid=mEl&&mEl.getAttribute('data-mid'),c=curChat(),m=c&&c.msgs.filter(function(x){return x.id===mid;})[0];
   if(act==='runpy'){runPy(b);return;}
+  if(act==='runjs'){runJs(b);return;}
+  if(act==='runhtml'){runHtml(b);return;}
+  if(act==='dlcode'){dlCode(b);return;}
   if(act==='runmmd'){runMmd(b);return;}
   if(act==='copycode'){copyText(b.closest('.code').querySelector('code').textContent);}
   else if(act==='copy'&&m)copyText(m.content);
