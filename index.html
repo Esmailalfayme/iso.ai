@@ -305,7 +305,12 @@ main{background:var(--bg)}
 
 .route{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);background:var(--surface-2);padding:2px 10px;border-radius:999px;margin-bottom:8px;animation:fade .3s ease}
 .route svg{width:14px;height:14px}
+.oa-wrap{display:flex;flex-direction:column;gap:8px;margin:8px 0}.oa{width:100%}.oa b{font-weight:700}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;margin:12px 0}.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
+.linkb{background:none;border:0;color:var(--accent);cursor:pointer;font:inherit;padding:4px}
+.nav-b.acct .nl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <noscript><main style="padding:24px;font-family:sans-serif"><h1>iso.1 — مساعد ذكاء اصطناعي</h1><p>iso.1 مساعد ذكاء اصطناعي مجاني يجيب عن أسئلتك، ويرسم الصور، ويبحث ويكتب تقارير، ويعيد صياغة النصوص ويلخصها ويترجمها ويدققها لغوياً.</p><ul><li>محادثة ذكية</li><li>توليد الصور</li><li>بحث وكتابة تقارير بالمصادر</li><li>إعادة صياغة وتلخيص وترجمة وتدقيق لغوي</li><li>كتابة رسائل ومنشورات ومساعدة في الدراسة والبرمجة</li></ul><p>فعّل JavaScript لاستخدام الموقع.</p></main></noscript>
@@ -458,7 +463,7 @@ globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12
 ok:'<path d="m20 6-11 11-5-5"/>',
 grid:'<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/>',
 clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'};
+user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'};
 function ico(n,s){return '<svg class="ic" width="'+(s||20)+'" height="'+(s||20)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(IC[n]||'')+'</svg>';}
 function logoSvg(s){return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lgG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent-2)"/><stop offset="1" style="stop-color:var(--accent-3)"/></linearGradient></defs><circle cx="16" cy="16" r="15" fill="url(#lgG)"/><rect x="14" y="14" width="4" height="10" rx="2" fill="#fff"/><path d="M16 4.2c.5 2.4 1.9 3.8 4.3 4.3-2.4.5-3.8 1.9-4.3 4.3-.5-2.4-1.9-3.8-4.3-4.3 2.4-.5 3.8-1.9 4.3-4.3z" fill="#fff"/></svg>';}
 
@@ -487,6 +492,7 @@ var STYLES={none:['بدون',''],real:['واقعي',', photorealistic, natural l
 
 function stripMsg(m){var o={};Object.keys(m).forEach(function(k){if(['live','imgFull','blob','objUrl','status'].indexOf(k)<0)o[k]=m[k];});return o;}
 function saveChats(){
+  if(typeof cloudPushSoon==='function')cloudPushSoon();
   var data=chats.slice(0,60).map(function(c){return{id:c.id,title:c.title,ts:c.ts,msgs:c.msgs.map(stripMsg)};});
   if(LS.set('iso1.chats',data)){LS.set('iso1.cur',curId);return;}
   for(var i=data.length-1;i>=0;i--){data[i].msgs.forEach(function(m){if(m.gen)m.gen.thumb=null;if(m.img)m.img=null;});if(LS.set('iso1.chats',data)){toast('الذاكرة ممتلئة: حُذفت صور المحادثات القديمة');return;}}
@@ -716,6 +722,7 @@ function renderNav(){
   var f=$('#sideF');f.innerHTML='';
   f.appendChild(nbtn('sun','المظهر',function(){S.theme=S.theme==='dark'?'light':S.theme==='light'?'auto':'dark';saveS();applyTheme();toast({dark:'المظهر: داكن',light:'المظهر: فاتح',auto:'المظهر: حسب الجهاز'}[S.theme]);}));
   f.appendChild(nbtn('sliders','الإعدادات',openSettings));
+  var ab=(typeof accountBtn==='function')?accountBtn():null;if(ab)f.insertBefore(ab,f.firstChild);
   var mb=$('#menuBtn');mb.innerHTML=ico('menu',22);$('#sideClose').innerHTML=ico('x',18);$('#topNew').innerHTML=ico('plus',22);
   markNav();
 }
@@ -1062,7 +1069,7 @@ function openSettings(){
   $('#sClose').addEventListener('click',closeSettings);
   m.hidden=false;
 }
-function closeSettings(){$('#modal').hidden=true;applyTheme();if(UI.view==='chat')renderMsgs();}
+function closeSettings(){$('#modal').hidden=true;$('#sheet').setAttribute('aria-label','الإعدادات');applyTheme();if(UI.view==='chat')renderMsgs();}
 
 /* ---------- init ---------- */
 function init(){
@@ -1077,6 +1084,101 @@ function init(){
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!$('#modal').hidden)closeSettings();else closeDrawer();}});
   go('chat');
 }
+/* ---------- account + cloud sync (Supabase Auth, RLS per user) ---------- */
+var SB=null,USER=null,synced={},pushT=null,pulling=false;
+var SB_KEY='sb_publishable_OmpN560vj1JHDCzxxaHMLA_zGlnblnD';
+var AUTH_PROVIDERS={github:true,google:false};
+try{if(window.supabase&&PUB)SB=window.supabase.createClient(PUB.url,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});}catch(e){SB=null;}
+function cloudForm(c){return{id:c.id,title:c.title||'',ts:c.ts||0,data:{msgs:c.msgs.map(function(m){var o=stripMsg(m);delete o.img;delete o.imgFull;if(o.gen){o.gen=JSON.parse(JSON.stringify(o.gen));o.gen.thumb=null;}return o;})}};}
+function cloudPushSoon(){if(!SB||!USER||pulling)return;clearTimeout(pushT);pushT=setTimeout(cloudPush,1200);}
+function cloudPush(){
+  if(!SB||!USER||pulling)return;
+  var rows=[],keep={};
+  chats.forEach(function(c){if(!c.msgs.length)return;var r=cloudForm(c);var k=JSON.stringify(r);keep[c.id]=1;if(synced[c.id]!==k){r.user_id=USER.id;rows.push([r,k]);}});
+  var gone=Object.keys(synced).filter(function(id){return !keep[id];});
+  if(rows.length)SB.from('chats').upsert(rows.map(function(x){return x[0];}),{onConflict:'user_id,id'}).then(function(res){if(!res.error)rows.forEach(function(x){synced[x[0].id]=x[1];});else toast('تعذّرت المزامنة');});
+  if(gone.length)SB.from('chats').delete().in('id',gone).then(function(res){if(!res.error)gone.forEach(function(id){delete synced[id];});});
+}
+function cloudPull(){
+  if(!SB||!USER)return Promise.resolve();
+  pulling=true;
+  return SB.from('chats').select('id,title,ts,data').order('ts',{ascending:false}).limit(200).then(function(res){
+    if(res.error){pulling=false;toast('تعذّر تحميل محادثاتك');return;}
+    var byId={};chats.forEach(function(c){byId[c.id]=c;});
+    (res.data||[]).forEach(function(r){
+      var rc={id:r.id,title:r.title||'محادثة',ts:+r.ts||0,msgs:(r.data&&r.data.msgs)||[]};
+      synced[r.id]=JSON.stringify(cloudForm(rc));
+      var lc=byId[r.id];
+      if(!lc)chats.push(rc);else if(rc.ts>(lc.ts||0)){var i=chats.indexOf(lc);chats[i]=rc;}
+    });
+    var empty=chats.filter(function(c){return !c.msgs.length;}),full=chats.filter(function(c){return c.msgs.length;});
+    full.sort(function(a,b){return(b.ts||0)-(a.ts||0);});
+    chats=empty.slice(0,1).concat(full);
+    pulling=false;
+    LS.set('iso1.chats',chats.filter(function(c){return c.msgs.length;}).slice(0,60).map(function(c){return{id:c.id,title:c.title,ts:c.ts,msgs:c.msgs.map(stripMsg)};}));
+    renderHistory();cloudPush();
+  });
+}
+function setUser(u){
+  var was=USER&&USER.id;USER=u||null;
+  if(USER&&USER.id!==was)cloudPull().then(function(){if(UI.view==='chat'&&!UI.busy)renderHistory();});
+  renderNav();
+}
+function signOut(){
+  if(!SB)return;
+  SB.auth.signOut().then(function(){USER=null;synced={};chats=[];LS.del('iso1.chats');LS.del('iso1.cur');freshChat();go('chat');renderNav();toast('تم تسجيل الخروج');});
+}
+function authErr(e){
+  var m=(e&&e.message||'').toLowerCase();
+  if(m.indexOf('invalid login')>=0)return 'البريد أو كلمة المرور غير صحيحة';
+  if(m.indexOf('already registered')>=0||m.indexOf('already been')>=0)return 'هذا البريد مسجّل مسبقاً، جرّب تسجيل الدخول';
+  if(m.indexOf('password')>=0&&m.indexOf('6')>=0)return 'كلمة المرور قصيرة (٦ أحرف على الأقل)';
+  if(m.indexOf('valid email')>=0||m.indexOf('invalid email')>=0)return 'البريد الإلكتروني غير صالح';
+  if(m.indexOf('rate')>=0)return 'محاولات كثيرة، انتظر قليلاً';
+  return 'تعذّر الأمر، حاول مرة أخرى';
+}
+function openAuth(mode){
+  mode=mode||'in';
+  var m=$('#modal'),sh=$('#sheet');
+  sh.setAttribute('aria-label','الحساب');
+  var oauth='';
+  if(AUTH_PROVIDERS.google)oauth+='<button class="btn oa" type="button" data-p="google">'+'<b>G</b> المتابعة مع Google</button>';
+  if(AUTH_PROVIDERS.github)oauth+='<button class="btn oa" type="button" data-p="github">'+'<b>⌥</b> المتابعة مع GitHub</button>';
+  sh.innerHTML='<div class="sh-h"><h2>'+(mode==='in'?'تسجيل الدخول':'إنشاء حساب')+'</h2><button class="ib" id="aClose" type="button" aria-label="إغلاق">'+ico('x')+'</button></div>'+
+  '<p class="hint">سجّل لتُحفظ محادثاتك في حسابك وتظهر على كل أجهزتك. يمكنك الاستمرار كضيف دائماً.</p>'+
+  '<div class="oa-wrap">'+oauth+'</div><div class="or"><span>أو بالبريد</span></div>'+
+  '<form id="aForm" novalidate><div class="field"><label for="aMail">البريد الإلكتروني</label><input class="input" id="aMail" type="email" autocomplete="email" dir="ltr" required></div>'+
+  '<div class="field"><label for="aPw">كلمة المرور</label><input class="input" id="aPw" type="password" autocomplete="'+(mode==='in'?'current-password':'new-password')+'" dir="ltr" minlength="6" required></div>'+
+  '<p class="hint" id="aMsg" role="alert" style="color:var(--danger,#c0392b)"></p>'+
+  '<button class="btn pri" id="aGo" type="submit" style="width:100%">'+(mode==='in'?'دخول':'إنشاء الحساب')+'</button></form>'+
+  '<p class="hint" style="text-align:center;margin-top:12px"><button type="button" class="linkb" id="aSw">'+(mode==='in'?'ليس لديك حساب؟ أنشئ حساباً':'لديك حساب؟ سجّل الدخول')+'</button></p>';
+  m.hidden=false;
+  $('#aClose').addEventListener('click',closeSettings);
+  $('#aSw').addEventListener('click',function(){openAuth(mode==='in'?'up':'in');});
+  $$('.oa').forEach(function(b){b.addEventListener('click',function(){
+    SB.auth.signInWithOAuth({provider:b.getAttribute('data-p'),options:{redirectTo:location.origin+location.pathname}}).then(function(r){if(r.error)$('#aMsg').textContent=authErr(r.error);});});});
+  $('#aForm').addEventListener('submit',function(e){
+    e.preventDefault();var em=$('#aMail').value.trim(),pw=$('#aPw').value,go=$('#aGo'),msg=$('#aMsg');msg.textContent='';
+    if(!em||!pw){msg.textContent='أدخل البريد وكلمة المرور';return;}
+    go.disabled=true;
+    var p=mode==='in'?SB.auth.signInWithPassword({email:em,password:pw}):SB.auth.signUp({email:em,password:pw,options:{emailRedirectTo:location.origin+location.pathname}});
+    p.then(function(r){go.disabled=false;
+      if(r.error){msg.textContent=authErr(r.error);return;}
+      if(!r.data.session){msg.textContent=mode==='up'?'تم إنشاء الحساب. إن طُلب تأكيد البريد فتحقق من صندوقك ثم سجّل الدخول.':'تعذّر الدخول';return;}
+      setUser(r.data.session.user);closeSettings();toast(mode==='in'?'مرحباً بعودتك':'تم إنشاء حسابك');
+    }).catch(function(){go.disabled=false;msg.textContent='تعذّر الاتصال';});
+  });
+  setTimeout(function(){var i=$('#aMail');if(i&&!COARSE)i.focus();},50);
+}
+function accountBtn(){
+  if(!SB)return null;
+  if(USER){var nm=(USER.user_metadata&&(USER.user_metadata.user_name||USER.user_metadata.name))||USER.email||'حسابي';
+    var b=nbtn('user',nm,function(){if(confirm('تسجيل الخروج من '+(USER.email||nm)+'؟'))signOut();});b.title=USER.email||'';b.classList.add('acct');return b;}
+  var b2=nbtn('user','تسجيل الدخول',function(){openAuth('in');});b2.classList.add('acct');return b2;
+}
+if(SB){SB.auth.onAuthStateChange(function(ev,s){if(ev==='SIGNED_OUT'&&!s){USER=null;return;}if(s&&s.user&&(!USER||USER.id!==s.user.id))setTimeout(function(){setUser(s.user);},0);});
+  SB.auth.getSession().then(function(r){if(r.data&&r.data.session)setUser(r.data.session.user);});}
+
 init();
 
 })();
