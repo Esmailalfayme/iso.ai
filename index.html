@@ -310,6 +310,7 @@ main{background:var(--bg)}
 .linkb{background:none;border:0;color:var(--accent);cursor:pointer;font:inherit;padding:4px}
 .nav-b.acct .nl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px}
 .runout{color:var(--fg)!important;direction:ltr;white-space:pre-wrap;font-family:'IBM Plex Mono',monospace;font-size:13px;padding:10px 12px;border-top:1px solid var(--line);background:var(--surface-2);max-height:320px;overflow:auto;text-align:left}.runout.err{color:#c0392b!important}.runout.mm{white-space:normal;text-align:center;background:var(--surface)}.runout.mm svg{max-width:100%;height:auto}.code-h .mini:disabled{opacity:.5}
+.texm{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle}div.texm{display:block;text-align:center;margin:.5em 0}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
 </head>
@@ -361,6 +362,17 @@ function mdInline(s){
   return s;
 }
 
+
+/* ---------- KaTeX math (open source, lazy) ---------- */
+var TEXS=[];
+function texTag(x,d){TEXS.push([x,d]);return '\u200b'+(TEXS.length-1)+'\u200c';}
+(function(){var busy=false,tmr=null,loading=null;
+function load(){if(loading)return loading;loading=new Promise(function(ok,no){var l=document.createElement('link');l.rel='stylesheet';l.href='https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css';document.head.appendChild(l);var sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js';sc.onload=ok;sc.onerror=function(){loading=null;no();};document.head.appendChild(sc);});return loading;}
+function scan(){var els=[].filter.call(document.querySelectorAll('code'),function(c){return !c.closest('pre')&&c.textContent.indexOf('\u200c')>-1&&!c.dataset.tx;});if(!els.length)return;
+load().then(function(){els.forEach(function(c){var m=c.textContent.match(/\u200b(\d+)\u200c/);if(!m||!TEXS[+m[1]])return;c.dataset.tx='1';var t=TEXS[+m[1]];try{var sp=document.createElement(t[1]?'div':'span');sp.className='texm';sp.dir='ltr';window.katex.render(t[0],sp,{displayMode:!!t[1],throwOnError:true,output:'html',trust:false,maxExpand:200});c.replaceWith(sp);}catch(e){c.textContent=c.textContent.replace(/\u200b\d+\u200c/,'');}});}).catch(function(){});}
+function kick(){clearTimeout(tmr);tmr=setTimeout(scan,150);}
+function init(){new MutationObserver(kick).observe(document.body,{childList:true,subtree:true});kick();}
+if(document.body)init();else document.addEventListener('DOMContentLoaded',init);})();
 /* ---------- open-source add-ons: Pyodide (run Python in the browser) + Mermaid (diagrams) ---------- */
 var _scr={};
 function loadScript(u){if(_scr[u])return _scr[u];return _scr[u]=new Promise(function(ok,no){var t=document.createElement('script');t.src=u;t.onload=ok;t.onerror=function(){delete _scr[u];no(new Error('load'));};document.head.appendChild(t);});}
@@ -415,7 +427,7 @@ function mdList(lines,i){
   return ['<'+tag+' dir="auto">'+items.map(function(it){return '<li>'+mdInline(it.text).replace(/\n/g,'<br>')+it.sub+'</li>';}).join('')+'</'+tag+'>',i];
 }
 function md(src){
-  src=String(src).split('```').map(function(part,k){if(k%2)return part;return part.replace(/\\\(([^\n]+?)\\\)/g,function(m,x){return '`'+x.replace(/\\(?=[a-zA-Z])/g,'').replace(/`/g,'')+'`';}).replace(/\\\[([\s\S]+?)\\\]/g,function(m,x){return '\n`'+x.replace(/\\(?=[a-zA-Z])/g,'').replace(/`/g,'').trim()+'`\n';});}).join('```');
+  src=String(src).split('```').map(function(part,k){if(k%2)return part;return part.replace(/\\\(([^\n]+?)\\\)/g,function(m,x){return '`'+x.replace(/\\(?=[a-zA-Z])/g,'').replace(/`/g,'')+texTag(x,0)+'`';}).replace(/\\\[([\s\S]+?)\\\]/g,function(m,x){return '\n`'+x.replace(/\\(?=[a-zA-Z])/g,'').replace(/`/g,'').trim()+texTag(x.trim(),1)+'`\n';});}).join('```');
   var lines=String(src).replace(/\r\n?/g,'\n').split('\n'),out=[],i=0,n=lines.length;
   function special(l,k){return /^\s*```/.test(l)||/^#{1,6}\s/.test(l)||/^\s*([-*_])(\s*\1){2,}\s*$/.test(l)||/^\s*>/.test(l)||LI.test(l)||(l.indexOf('|')>-1&&k+1<n&&TSEP.test(lines[k+1]));}
   while(i<n){
