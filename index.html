@@ -1233,7 +1233,6 @@ if(SB){SB.auth.onAuthStateChange(function(ev,s){if(ev==='SIGNED_OUT'&&!s){USER=n
 
 init();
 
-})();
 /* ---------- add-ons 3: highlight.js, Chart.js, qrcode-generator, canvas-confetti, command palette, export, templates, CSV ---------- */
 (function(){
 try{
@@ -1327,6 +1326,8 @@ document.addEventListener('keydown',function(e){
 new MutationObserver(kick).observe(document.body,{childList:true,subtree:true});kick();
 window.__isoAddons=1;
 }catch(err){console.warn('addons',err);}
+})();
+
 })();
 </script>
 </body>
